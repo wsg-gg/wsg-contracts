@@ -32,6 +32,9 @@ contract Pool is ReentrancyGuard, Pausable {
         address _rewardsToken,
         address _stakingToken
     ) public {
+        require(_rewardsToken != address(0) &&
+            _stakingToken != address(0), '!null');
+            
         rewardsToken = IBEP20(_rewardsToken);
         stakingToken = IBEP20(_stakingToken);
     }

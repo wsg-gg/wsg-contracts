@@ -337,7 +337,7 @@ contract WsgDepositHub is Pausable, ReentrancyGuard {
     }
 
     modifier onlyOperator() {
-        require(_operators[_msgSender()] == true, "Hub: caller is not an operator");
+        require(_operators[_msgSender()], "Hub: caller is not an operator");
         _;
     }
 }
