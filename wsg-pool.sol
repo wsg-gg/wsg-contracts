@@ -34,7 +34,7 @@ contract Pool is ReentrancyGuard, Pausable {
     ) public {
         require(_rewardsToken != address(0) &&
             _stakingToken != address(0), '!null');
-            
+
         rewardsToken = IBEP20(_rewardsToken);
         stakingToken = IBEP20(_stakingToken);
     }
@@ -129,7 +129,13 @@ contract Pool is ReentrancyGuard, Pausable {
 
     function exit() external {
         withdraw(_balances[msg.sender]);
-        getReward();
+        
+        uint256 reward = rewards[msg.sender];
+        if (reward > 0) {
+            rewards[msg.sender] = 0;
+            rewardsToken.safeTransfer(msg.sender, reward);
+            emit RewardPaid(msg.sender, reward);
+        }
     }
 
     // RESTRICTED FUNCTIONS
